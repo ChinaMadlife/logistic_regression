@@ -2,19 +2,19 @@ from numpy import *
 import numpy as np
 import matplotlib.pyplot as plt
 
-def file2matrix(path,delimiter):	#ÏÈ¶ÁÈëcontnet£¬ÔÙ½«Æä°´ĞĞ·Ö¿ª£¬ÔÙÓÃeval±ä³Élist£¬ÔÙ×ªÎª¾ØÕóÀàĞÍ
+def file2matrix(path,delimiter):	#å…ˆè¯»å…¥contnetï¼Œå†å°†å…¶æŒ‰è¡Œåˆ†å¼€ï¼Œå†ç”¨evalå˜æˆlistï¼Œå†è½¬ä¸ºçŸ©é˜µç±»å‹
 	recordlist=[]
 	fp=open(path,"rb")
 	content=fp.read()
 	fp.close()
-	rowlist=content.splitlines()	#°´ĞĞ×ª»»ÎªÒ»Î¬±í
-	recordlist=[map(eval,row.split(delimiter)) for row in rowlist]	#recordlistÎªlist¸ñÊ½µÄ£¬ÔÙ½«Æä×ª»¯Îªmat¸ñÊ½µÄ
+	rowlist=content.splitlines()	#æŒ‰è¡Œè½¬æ¢ä¸ºä¸€ç»´è¡¨
+	recordlist=[map(eval,row.split(delimiter)) for row in rowlist]	#recordlistä¸ºlistæ ¼å¼çš„ï¼Œå†å°†å…¶è½¬åŒ–ä¸ºmatæ ¼å¼çš„
 	return mat(recordlist)
 
 def logistic(wTx):
 	return 1.0/(1.0+exp(-wTx))
 
-def drawScatterbyLabel(plt,Input):	#»­³öÉ¢µãÍ¼
+def drawScatterbyLabel(plt,Input):	#ç”»å‡ºæ•£ç‚¹å›¾
 	m,n=shape(Input)
 	target=Input[:,-1]
 	for i in xrange(m):
@@ -38,7 +38,7 @@ weightlist=[]
 drawScatterbyLabel(plt,Input)
 
 dataMat=buildMat(Input)
-#´Ë´¦ÊÇÒòÎªX0=1£¬¹Ê¶øµÚÒ»ÁĞ¶¼ÊÇ1
+#æ­¤å¤„æ˜¯å› ä¸ºX0=1ï¼Œæ•…è€Œç¬¬ä¸€åˆ—éƒ½æ˜¯1
 alpha=0.001
 steps=500
 
@@ -49,9 +49,9 @@ weights=ones(n)
 for j in xrange(steps):
 	dataIndex=range(m)
 	for i in xrange(m):
-		alpha=2/(1.0+i+j)+0.0001	#¶¯Ì¬ĞŞ¸Ä²½³¤
+		alpha=2/(1.0+i+j)+0.0001	#åŠ¨æ€ä¿®æ”¹æ­¥é•¿
 		randIndex=int(random.uniform(0,len(dataIndex)))
-		gradient=sum(dataMat[randIndex]*weights.T)	#Ã¿´ÎÖ»È¡Ò»×éÊı¾İ½øĞĞ¼ÆËã
+		gradient=sum(dataMat[randIndex]*weights.T)	#æ¯æ¬¡åªå–ä¸€ç»„æ•°æ®è¿›è¡Œè®¡ç®—
 		output=logistic(gradient)
 		errors=target[randIndex]-output
 		weights=weights+alpha*errors*dataMat[randIndex]
@@ -75,4 +75,9 @@ axes1.plot(X,-weightmat[:,0]/weightmat[:,2],color='blue',linewidth=1,linestyle="
 axes2.plot(X,-weightmat[:,1]/weightmat[:,2],color='blue',linewidth=1,linestyle="-")
 plt.show()
 
-#we repeatedly run through the training set, and each time we encounter a training example, we update the parameters according to the gradient of the error with respect to that single training example only. This algorithm is called stochastic gradient descent (also incremental gradient descent). Whereas batch gradient descent has to scan through the entire training set before taking a single step¡ªa costly operation if m is large¡ªstochastic gradient descent can start making progress right away, and continues to make progress with each example it looks at
+#we repeatedly run through the training set, and each time we encounter a training example, 
+#we update the parameters according to the gradient of the error with respect to that single 
+#training example only. This algorithm is called stochastic gradient descent (also incremental 
+#gradient descent). Whereas batch gradient descent has to scan through the entire training set
+#before taking a single stepâ€”a costly operation if m is largeâ€”stochastic gradient descent can 
+#start making progress right away, and continues to make progress with each example it looks at
